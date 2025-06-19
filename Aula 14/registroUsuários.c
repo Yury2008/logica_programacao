@@ -26,7 +26,7 @@ int main()
 
   fscanf(arquivo, "Nome: %49[^\n] Idade: %i Email: %99[^\n]", nome, &idade, email);
 
-  printf("\nNome: %s \nIdade: %d \nEmail: %s", nome, idade, email);
+  printf("\nNome: %s \nIdade: %i \nEmail: %s", nome, idade, email);
   fclose(arquivo);
   
   return 0;
