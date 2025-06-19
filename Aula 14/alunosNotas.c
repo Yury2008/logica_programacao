@@ -7,7 +7,7 @@ int main()
 
   if(arquivo == NULL)
   {
-    printf("Erro ao encontrar o arquivo\n);
+    printf("Erro ao encontrar o arquivo\n");
     return 1;
   }
   
