@@ -618,8 +618,7 @@ void menu()
   printf("7 - Buscar filme por título\n");
   printf("8 - Atualizar status do filme\n");
   printf("9 - Excluir filme\n");
-  printf("10 - Salvar e carregar dados de/para um arquivo texto\n");
-  printf("11 - Sair\n");
+  printf("10 - Sair\n");
   printf("==========================================================\n");
 }
 
@@ -713,7 +712,7 @@ int tituloExiste(Filmes filme[], int *totalFilmes)
   {
    if(strcmp(buscarTitulo, filme[i].titulo) == 0) return i;
   }
-  
+
   return -1;
 }
 
@@ -859,7 +858,7 @@ void filmeCodigo(Filmes filme[], int *totalFilmes)
       printarStatus(filme, j);
       printf("--------------------------------------------\n\n");
     }
-      
+
     else
     {
       printf("\nO seu código não foi encontrado\n\n");
@@ -970,11 +969,60 @@ void deletarFilme(Filmes filme[], int *totalFilmes)
   }
 }
 
+void salvarDados(Filmes filme[], int *totalFilmes)
+{
+  FILE *arquivo = fopen("filmes.txt", "w");
+
+  if (arquivo == NULL)
+  {
+    printf("Erro ao abrir o arquivo para escrita.\n");
+    return;
+  }
+
+  for(int i = 0; i < *totalFilmes; i++)
+  {
+    fprintf(arquivo, "%i,%s, %i, %i, %i, %i\n", filme[i].codigo, filme[i].titulo, filme[i].anoLancamento, filme[i].status, filme[i].genero, filme[i].indicativa);
+  }
+
+  fclose(arquivo);
+}
+
+void carregarDados(Filmes filme[], int *i, int *atualID)
+{
+  FILE *arquivo = fopen("filmes.txt", "r");
+
+  if (arquivo == NULL)
+  {
+    printf("Nenhum arquivo de dados encontrado. Começando com dados vazios.\n");
+    return;
+  }
+
+  while(fscanf(arquivo, "%i,%[^,], %i, %i, %i, %i\n", &filme[*i].codigo, filme[*i].titulo, &filme[*i].anoLancamento, &filme[*i].status, &filme[*i].genero, &filme[*i].indicativa) != EOF)
+  {
+    (*i)++;
+  }
+
+  if (*i > 0) 
+  {
+    *atualID = filme[*i - 1].codigo + 1;
+  }
+  else 
+  {
+    *atualID = 1001;
+  }
+
+  fclose(arquivo);
+}
+
+// Fim das funções
 
 int main()
 {
+  // Variáveis "globais"
+
   int totalFilmes = 0, id = 1001;
-  int opcao;
+
+  Filmes filme[MAX_FILME];
 
   // Inicialização de classificação indicativa
   int al = 0, a10 = 0, a12 = 0, a14 = 0, a16 = 0, a18 = 0; 
@@ -985,7 +1033,9 @@ int main()
   // Inicialização de status
   int estreia = 0, emCartaz = 0, foraCine = 0;
 
-  Filmes filme[MAX_FILME];
+  carregarDados(filme, &totalFilmes, &id);
+
+  int opcao;
 
   do
   {
@@ -993,6 +1043,14 @@ int main()
     printf("Escolha uma opção: ");
     scanf("%i", &opcao);
     getchar();
+
+    while(opcao > 10 || opcao < 1)
+    {
+      printf("\nOpção inválida. Tente novamente\n");
+      printf("Escolha a opção: ");
+      scanf("%i", &opcao);
+      getchar();
+    }
 
     switch(opcao)
     {
@@ -1005,9 +1063,11 @@ int main()
       case 7: filmeTitulo(filme, &totalFilmes); break;
       case 8: atualizarStatus(filme, &totalFilmes, &estreia, &emCartaz, &foraCine); break;
       case 9: deletarFilme(filme, &totalFilmes); break;
+      case 10: salvarDados(filme, &totalFilmes); printf("\nSaindo...\n\n"); break;
+      default: printf("\nOpção inválida\n\n"); break;
     }
   }
-  while(opcao != 11);
+  while(opcao != 10);
 
   return 0;
 }
