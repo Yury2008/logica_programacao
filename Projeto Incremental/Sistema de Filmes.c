@@ -564,14 +564,7 @@ void classificacaoFilme(Filmes filme[], int *totalFilmes, int *al, int *a10, int
 {
   int opcao, i = *totalFilmes;
 
-  printf("\n========== CLASSIFICAÇÃO INDICATIVA ==========\n");
-  printf("1 - AL\n");
-  printf("2 - A10\n");
-  printf("3 - A12\n");
-  printf("4 - A14\n");
-  printf("5 - A16\n");
-  printf("6 - A18\n");
-  printf("==============================================\n");
+  menuClassificacao();
   printf("Escolha a opção: ");
   scanf("%i", &opcao);
 
