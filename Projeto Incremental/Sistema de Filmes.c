@@ -5,23 +5,17 @@
 enum Status { NADA, ESTREIA, EMCARTAZ, FORADOCINE };
 enum Classificacao { NULO, AL, A10, A12, A14, A16, A18 };
 enum Genero { ZERO, Acao_Aventura, Comedia, Drama, Terror, Ficcao_Cientifica, Animacao, Romance };
+enum Critica { MUNDIAL_DO_PALMEIRAS, HORRIVEL, FRACO, RUIM, MAIS_OU_MENOS, DIVERTIDO, MTO_BOM, INCRIVEL, ABSOLUTE_CINEMA };
 
-typedef struct 
-{
-  int codigo;
-  char titulo[50];
-  int anoLancamento;
-  enum Status status;
-  enum Genero genero;
-  enum Classificacao indicativa;
-} 
-Filmes;
+typedef struct { int roteiro; int direcao; int atuacao; int fotografia; int edicao; int trilhaSonora; float notaFinal; enum Critica critica; } Avaliacao;
+
+typedef struct { int codigo; char titulo[50]; int anoLancamento; enum Status status; enum Genero genero; enum Classificacao indicativa; Avaliacao avalicoes; } Filmes;
 
 // Funções para inprimir algo na tela
 
 void printarGenero(Filmes filme[], int i);
 void printarClassificacao(Filmes filme[], int i);
-void printarStatus(Filmes filme[], int i) ;
+void printarStatus(Filmes filme[], int i);
 
 // Funções sobre gêneros
 
@@ -50,6 +44,7 @@ void listarClassificacao(Filmes filme[], int totalFilmes, int al, int a10, int a
 void filmeCodigo(Filmes filme[], int totalFilmes);
 void filmeTitulo(Filmes filme[], int totalFilmes);
 void atualizarStatus(Filmes filme[], int totalFilmes, int *estreia, int *emCartaz, int *foraCine);
+void avaliarFilme(Filmes filme[], int totalFilmes);
 void deletarFilme(Filmes filme[], int *totalFilmes);
 void salvarDados(Filmes filme[], int *totalFilmes);
 void carregarDados(Filmes filme[], int *i, int *atualID);
@@ -59,7 +54,6 @@ void carregarDados(Filmes filme[], int *i, int *atualID);
 int main()
 {
   // Variáveis "globais"
-
   int totalFilmes = 0, id = 1001;
 
   Filmes filme[MAX_FILME];
@@ -157,15 +151,12 @@ void printarStatus(Filmes filme[], int i)
 
 void menuGeneros()
 {
-  printf("\n========== GÊNEROS ==========\n");
-  printf("1 - Ação e Aventura\n");
-  printf("2 - Comedia\n");
-  printf("3 - Drama\n");
+  printf("\n==================== GÊNEROS ====================\n");
+  printf("1 - Ação e Aventura    5 - Ficção Científica\n\n");
+  printf("2 - Comedia            6 - Animacao\n\n");
+  printf("3 - Drama              7 - Romance\n\n");
   printf("4 - Terror\n");
-  printf("5 - Ficção Científica\n");
-  printf("6 - Animacao\n");
-  printf("7 - Romance\n");
-  printf("=============================\n");
+  printf("=================================================\n");
 }
 
 void generosFilme(Filmes filme[], int totalFilmes, int *acao, int *comedia, int *drama, int *terror, int *ficcao, int *animacao, int *romance)
@@ -202,9 +193,9 @@ void generosFilme(Filmes filme[], int totalFilmes, int *acao, int *comedia, int 
 
 void menuStatus()
 {
-  printf("\n========== STATUS ==========\n\n");
-  printf("1 - Estreia\n");
-  printf("2 - Em cartaz\n");
+  printf("\n========== STATUS ==========\n");
+  printf("1 - Estreia\n\n");
+  printf("2 - Em cartaz\n\n");
   printf("3 - Fora do cinema\n");
   printf("============================\n\n");
 }
@@ -214,12 +205,9 @@ void menuStatus()
 void menuClassificacao()
 {
   printf("\n========== CLASSIFICAÇÃO INDICATIVA ==========\n");
-  printf("1 - AL\n");
-  printf("2 - A10\n");
-  printf("3 - A12\n");
-  printf("4 - A14\n");
-  printf("5 - A16\n");
-  printf("6 - A18\n");
+  printf("1 - AL    4 - A14\n\n");
+  printf("2 - A10   5 - A16\n\n");
+  printf("3 - A12   6 - A18\n");
   printf("==============================================\n");
 }
 
@@ -264,18 +252,13 @@ void menuAtualizar()
 
 void menu()
 {
-  printf("========================= FILMES =========================\n");
-  printf("1 - Cadastrar novo filme\n");
-  printf("2 - Exibir todos os filmes\n");
-  printf("3 - Listar filmes por gênero\n");
-  printf("4 - Listar filme por status\n");
-  printf("5 - Listar por classifição indicativa\n");
-  printf("6 - Buscar filme por código\n");
-  printf("7 - Buscar filme por título\n");
-  printf("8 - Atualizar status do filme\n");
-  printf("9 - Excluir filme\n");
-  printf("10 - Sair\n");
-  printf("==========================================================\n");
+  printf("=================================== FILMES ===================================\n");
+  printf("1 - Cadastrar novo filme                6 - Buscar filme por código\n\n");
+  printf("2 - Exibir todos os filmes              7 - Buscar filme por título\n\n");
+  printf("3 - Listar filmes por gênero            8 - Atualizar status do filme\n\n");
+  printf("4 - Listar filme por status             9 - Excluir filme\n\n");
+  printf("5 - Listar por classifição indicativa   10 - Sair\n");
+  printf("==============================================================================\n");
 }
 
 void cadastrarFilmes(Filmes filme[], int *totalFilmes, int *id, int *estreia, int *acao, int *comedia, int *drama, int *terror, int *ficcao, int *animacao, int *romance, int *al, int *a10, int *a12, int *a14, int *a16, int *a18)
@@ -325,7 +308,7 @@ void cadastrarFilmes(Filmes filme[], int *totalFilmes, int *id, int *estreia, in
     classificacaoFilme(filme, *totalFilmes, al, a10, a12, a14, a16, a18);
 
     filme[i].status = ESTREIA;
-    printf("------------------------------------x----------------\n");
+    printf("-----------------------------------------------------\n");
 
     printf("\n--------------- FILME ---------------\n");
     printf("Título: %s\n", filme[i].titulo);
@@ -406,6 +389,7 @@ void listarGenero(Filmes filme[], int totalFilmes, int acao, int comedia, int dr
   else
   {
     int opcao;
+    int encontrou = 0;
     menuGeneros();
     printf("Escolha uma opção: ");
     scanf("%i", &opcao);
@@ -417,109 +401,33 @@ void listarGenero(Filmes filme[], int totalFilmes, int acao, int comedia, int dr
       scanf("%i", &opcao);
     }
     
-    if(opcao == 1)
-    {
-      if(acao == 0) printf("\nNão tem filmes de ação");
-      else{printf("\n-------------------- AÇÃO E AVENTURA --------------------\n\n");}
-    }
-
-    else if(opcao == 2)
-    {
-      if(comedia == 0) printf("\nNão tem filmes de comédia");
-      else {printf("\n-------------------- COMÉDIA --------------------\n\n");}
-    }
-
-    else if(opcao == 3)
-    {
-      if(drama == 0) printf("\nNão tem filmes de drama");
-      else {printf("\n-------------------- DRAMA --------------------\n\n");}
-    }
-
-    else if(opcao == 4)
-    {
-      if(terror == 0) printf("\nNão tem filmes de terror");
-      else{printf("\n-------------------- TERROR --------------------\n\n");}
-    }
-
-    else if(opcao == 5)
-    {
-      if(ficcao == 0) printf("\nNão tem filmes de ficção científica");
-      else {printf("\n-------------------- FICÇÃO CIENTÍFICA --------------------\n\n");}
-    }
-
-    else if(opcao == 6)
-    {
-      if(animacao == 0) printf("\nNão tem filmes de animação");
-      else {printf("\n-------------------- ANIMAÇÃO --------------------\n\n");}
-    }
-
-    else
-    {
-      if(romance == 0) printf("\nNão tem filmes de romance");
-      else {printf("\n-------------------- ROMANCE --------------------\n\n");}
-    }
-
     for(int i = 0; i < totalFilmes; i++)
     {
       if(filme[i].genero == opcao)
       {
-        printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
+        printf("\n\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
         printf("Título: %s\n", filme[i].titulo);
         printarGenero(filme, i);
         printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
         printarClassificacao(filme, i);
         printarStatus(filme, i);
         printf("--------------------------------------------\n\n");
+        encontrou++;
       }
     }
-    
-    if(opcao == 1)
-    {
-      if(acao == 0)printf("\n\n");
-        
-      else {printf("--------------------------------------------------------\n\n");}
-    }
 
-    else if(opcao == 2)
+    if(encontrou == 0)
     {
-      if(comedia == 0) printf("\n\n");
-        
-      else {printf("-------------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 3)
-    {
-      if(drama == 0) printf("\n\n");
-        
-      else {printf("-----------------------------------------------\n\n");}
-    }
-    
-    else if(opcao == 4)
-    {
-      if(terror == 0)printf("\n\n");
-        
-      else {printf("------------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 5)
-    {
-      if(ficcao == 0) printf("\n\n");
-        
-      else {printf("-----------------------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 6)
-    {
-      if(animacao == 0) printf("\n\n");
-        
-      else {printf("--------------------------------------------------\n\n");}
-    }
-
-    else
-    {
-      if(romance == 0) printf("\n\n");
-        
-      else {printf("--------------------------------------------------\n\n");}
+      switch(opcao)
+      {
+        case Acao_Aventura: printf("\nNão tem filmes de ação\n\n"); break;
+        case Comedia: printf("\nNão tem filmes de comédia\n\n"); break;
+        case Drama: printf("\nNão tem filmes de drama\n\n"); break;
+        case Terror: printf("\nNão tem filmes de terror\n\n"); break;
+        case Ficcao_Cientifica: printf("\nNão tem filmes de ficção científica\n\n"); break;
+        case Animacao: printf("\nNão tem filmes de animação\n\n"); break;
+        default: printf("\nNão tem filmes de romance\n\n"); break;
+      }
     }
   }
 }
@@ -534,6 +442,7 @@ void listarStatus(Filmes filme[], int totalFilmes, int estreia, int emCartaz, in
   else
   {
     int opcao;
+    int encontrou = 0;
     menuStatus();
     printf("Escolha a opção: ");
     scanf("%i", &opcao);
@@ -543,24 +452,6 @@ void listarStatus(Filmes filme[], int totalFilmes, int estreia, int emCartaz, in
       printf("\nOpção inválida. Tente novamente\n");
       printf("Escolha a opção: ");
       scanf("%i", &opcao);
-    }
-
-    if(opcao == 1)
-    {
-      if(estreia == 0) printf("\nNão tem filmes em estreia");
-      else{printf("\n-------------------- ESTREIA --------------------\n\n");}
-    }
-    
-    else if(opcao == 2)
-    {
-      if(emCartaz == 0) printf("\nNão tem filmes em cartaz");
-      else {printf("\n-------------------- EM CARTAZ --------------------\n\n");}
-    }
-
-    else
-    {
-      if(foraCine == 0) printf("\nNão tem filmes fora do cinema");
-      else {printf("\n--------------- FORA DOS CARTAZES ---------------\n\n");}
     }
 
     for(int i = 0; i < totalFilmes; i++)
@@ -574,28 +465,18 @@ void listarStatus(Filmes filme[], int totalFilmes, int estreia, int emCartaz, in
         printarClassificacao(filme, i);
         printarStatus(filme, i);
         printf("--------------------------------------------\n\n");
+        encontrou++;
       }
     }
 
-    if(opcao == 1)
+    if(encontrou == 0)
     {
-      if(estreia == 0)printf("\n\n");
-        
-      else {printf("-------------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 2)
-    {
-      if(emCartaz == 0) printf("\n\n");
-        
-      else {printf("---------------------------------------------------\n\n");}
-    }
-    
-    else
-    {
-      if(foraCine == 0) printf("\n\n");
-        
-      else {printf("-------------------------------------------------\n\n");}
+      switch(opcao)
+      {
+        case ESTREIA: if(estreia == 0) printf("\nNão tem filmes em estreia\n\n"); break;
+        case EMCARTAZ: if(emCartaz == 0) printf("\nNão tem filmes em cartaz\n\n"); break;
+        default: if(foraCine == 0) printf("\nNão tem filmes fora do cinema\n\n"); break;
+      }
     }
   }
 }
@@ -610,6 +491,7 @@ void listarClassificacao(Filmes filme[], int totalFilmes, int al, int a10, int a
   else
   {
     int opcao;
+    int encontrou = 0;
     menuClassificacao();
     printf("Escolha a opção: ");
     scanf("%i", &opcao);
@@ -620,42 +502,7 @@ void listarClassificacao(Filmes filme[], int totalFilmes, int al, int a10, int a
       printf("Escolha a opção: ");
       scanf("%i", &opcao);
     }
-    if(opcao == 1)
-    {
-      if(al == 0) printf("\nNão tem filmes com essa classificação");
-      else{printf("\n-------------------- LIVRE --------------------\n\n");}
-    }
-
-    else if(opcao == 2)
-    {
-      if(a10 == 0) printf("\nNão tem filmes com essa classificação");
-      else {printf("\n-------------------- A10 --------------------\n\n");}
-    }
-
-    else if(opcao == 3)
-    {
-      if(a12 == 0) printf("\nNão tem filmes com essa classificação");
-      else {printf("\n-------------------- A12 --------------------\n\n");}
-    }
-
-    else if(opcao == 4)
-    {
-      if(a14 == 0) printf("\nNão tem filmes com essa classificação");
-      else{printf("\n-------------------- A14 --------------------\n\n");}
-    }
-
-    else if(opcao == 5)
-    {
-      if(a16 == 0) printf("\nNão tem filmes com essa classificação");
-      else {printf("\n-------------------- A16 --------------------\n\n");}
-    }
-
-    else
-    {
-      if(a18 == 0) printf("\nNão tem filmes com essa classificação");
-      else {printf("\n-------------------- A18 --------------------\n\n");}
-    }
-
+    
     for(int i = 0; i < totalFilmes; i++)
     {
      if(filme[i].indicativa == opcao)
@@ -667,43 +514,21 @@ void listarClassificacao(Filmes filme[], int totalFilmes, int al, int a10, int a
        printarClassificacao(filme, i);
        printarStatus(filme, i);
        printf("--------------------------------------------\n\n");
+       encontrou++;
      }
     }
 
-    if(opcao == 1) 
+    if(encontrou == 0)
     {
-      if(al == 0) printf("\n\n");
-      else {printf("-----------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 2)
-    {
-      if(a10 == 0) printf("\n\n");
-      else {printf("---------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 3)
-    {
-      if(a12 == 0) printf("\n\n");
-      else {printf("---------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 4)
-    {
-      if(a14 == 0) printf("\n\n");
-      else {printf("---------------------------------------------\n\n");}
-    }
-
-    else if(opcao == 5)
-    {
-      if(a16 == 0) printf("\n\n");
-      else {printf("---------------------------------------------\n\n");}
-    }
-
-    else
-    {
-      if(a18 == 0) printf("\n\n");
-      else {printf("---------------------------------------------\n\n");}
+      switch(opcao)
+      {
+        case AL: if(al == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+        case A10: if(a10 == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+        case A12: if(a12 == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+        case A14: if(a14 == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+        case A16: if(a16 == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+        default: if(a18 == 0) printf("\nNão tem filmes com essa classificação\n\n"); break;
+      }
     }
   }
 }
