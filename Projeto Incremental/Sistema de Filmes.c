@@ -19,6 +19,7 @@ void printarGenero(Filmes filme[], int i);
 void printarClassificacao(Filmes filme[], int i);
 void printarStatus(Filmes filme[], int i);
 void printarCritica(Filmes filme[], int i);
+void printarFilme(Filmes filme[], int i);
 
 // Funções sobre gêneros
 
@@ -105,7 +106,7 @@ int main()
       default: printf("\nOpção inválida\n\n"); break;
     }
   }
-  while(opcao != 10);
+  while(opcao != 11);
 
   return 0;
 }
@@ -165,6 +166,21 @@ void printarCritica(Filmes filme[], int i)
     case INCRIVEL: printf("Avaliação: Incrível\n"); break;
     default: printf("Avaliação: Absolute Cinema\n"); break;
   }
+}
+
+void printarFilme(Filmes filme[], int i)
+{
+  printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
+  printf("Título: %s\n", filme[i].titulo);
+  printf("Código: %i\n", filme[i].codigo);
+  printarGenero(filme, i);
+  printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
+  printarClassificacao(filme, i);
+  printarStatus(filme, i);
+  printarCritica(filme, i);
+  printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
+  printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
+  printf("--------------------------------------------\n\n");
 }
 
 // Funções sobre gêneros
@@ -335,17 +351,7 @@ void cadastrarFilmes(Filmes filme[], int *totalFilmes, int *id, int *estreia, in
     filme[i].status = ESTREIA;
     printf("-----------------------------------------------------\n");
 
-    printf("\n--------------- FILME ---------------\n");
-    printf("Título: %s\n", filme[i].titulo);
-    printf("Código: %i\n", filme[i].codigo);
-    printarGenero(filme, i);
-    printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
-    printarClassificacao(filme, i);
-    printarStatus(filme, i);
-    printarCritica(filme, i);
-    printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
-    printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
-    printf("-------------------------------------\n\n");
+    printarFilme(filme, i);
 
     (*estreia)++;
     (*id)++;
@@ -395,17 +401,7 @@ void exibirFilmes(Filmes filme[], int totalFilmes)
     printf("\n-------------------- FILMES CADASTRADOS --------------------\n\n");
     for(int i = 0; i < totalFilmes; i++)
     {
-      printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
-      printf("Título: %s\n", filme[i].titulo);
-      printf("Código: %i\n", filme[i].codigo);
-      printarGenero(filme, i);
-      printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
-      printarClassificacao(filme, i);
-      printarStatus(filme, i);
-      printarCritica(filme, i);
-      printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
-      printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
-      printf("--------------------------------------------\n\n");
+      printarFilme(filme, i);
     }
     printf("------------------------------------------------------------\n\n");
   }
@@ -437,17 +433,7 @@ void listarGenero(Filmes filme[], int totalFilmes, int acao, int comedia, int dr
     {
       if(filme[i].genero == opcao)
       {
-        printf("\n\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
-        printf("Título: %s\n", filme[i].titulo);
-        printf("Código: %i\n", filme[i].codigo);
-        printarGenero(filme, i);
-        printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
-        printarClassificacao(filme, i);
-        printarStatus(filme, i);
-        printarCritica(filme, i);
-        printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
-        printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
-        printf("--------------------------------------------\n\n");
+        printarFilme(filme, i);
         encontrou++;
       }
     }
@@ -494,17 +480,7 @@ void listarStatus(Filmes filme[], int totalFilmes, int estreia, int emCartaz, in
     {
       if(filme[i].status == opcao)
       {
-        printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
-        printf("Título: %s\n", filme[i].titulo);
-        printf("Código: %i\n", filme[i].codigo);
-        printarGenero(filme, i);
-        printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
-        printarClassificacao(filme, i);
-        printarStatus(filme, i);
-        printarCritica(filme, i);
-        printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
-        printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
-        printf("--------------------------------------------\n\n");
+        printarFilme(filme, i);
         encontrou++;
       }
     }
@@ -547,17 +523,7 @@ void listarClassificacao(Filmes filme[], int totalFilmes, int al, int a10, int a
     {
      if(filme[i].indicativa == opcao)
      {
-       printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[i].codigo);
-       printf("Título: %s\n", filme[i].titulo);
-       printf("Código: %i\n", filme[i].codigo);
-       printarGenero(filme, i);
-       printf("Ano de lançamento: %i\n", filme[i].anoLancamento);
-       printarClassificacao(filme, i);
-       printarStatus(filme, i);
-       printarCritica(filme, i);
-       printf("Nota: %.2f\n", filme[i].avalicoes.notaFinal);
-       printf("Quantidade de avaliações: %i\n", filme[i].avalicoes.qtdAvaliacao);
-       printf("--------------------------------------------\n\n");
+       printarFilme(filme, i);
        encontrou++;
      }
     }
@@ -590,17 +556,7 @@ void filmeCodigo(Filmes filme[], int totalFilmes)
 
     if(j != -1)
     {
-      printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[j].codigo);
-      printf("Título: %s\n", filme[j].titulo);
-      printf("Código: %i\n", filme[j].codigo);
-      printarGenero(filme, j);
-      printf("Ano de lançamento: %i\n", filme[j].anoLancamento);
-      printarClassificacao(filme, j);
-      printarStatus(filme, j);
-      printarCritica(filme, j);
-      printf("Nota: %.2f\n", filme[j].avalicoes.notaFinal);
-      printf("Quantidade de avaliações: %i\n", filme[j].avalicoes.qtdAvaliacao);
-      printf("--------------------------------------------\n\n");
+      printarFilme(filme, j);
     }
 
     else
@@ -623,17 +579,7 @@ void filmeTitulo(Filmes filme[], int totalFilmes)
 
     if(j != -1)
     {
-      printf("\n--------------- CÓDIGO(%i) ---------------\n", filme[j].codigo);
-      printf("Título: %s\n", filme[j].titulo);
-      printf("Código: %i\n", filme[j].codigo);
-      printarGenero(filme, j);
-      printf("Ano de lançamento: %i\n", filme[j].anoLancamento);
-      printarClassificacao(filme, j);
-      printarStatus(filme, j);
-      printarCritica(filme, j);
-      printf("Nota: %.2f\n", filme[j].avalicoes.notaFinal);
-      printf("Quantidade de avaliações: %i\n", filme[j].avalicoes.qtdAvaliacao);
-      printf("--------------------------------------------\n\n");
+      printarFilme(filme, j);
     }
 
     else
